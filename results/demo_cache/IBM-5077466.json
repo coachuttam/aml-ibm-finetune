@@ -1,0 +1,283 @@
+{
+  "alert_id": "IBM-5077466",
+  "txn_id": 5077466,
+  "time": "2022-09-11 14:02:00",
+  "sender": "0223/8119F8CC0",
+  "receiver": "0228101/80B0C3F40",
+  "amount": 8019.98,
+  "currency": "Australian Dollar",
+  "score": 1.0,
+  "typology": "CYCLE",
+  "reason": "Money paid to the receiver reaches the sender again after 3 payments.",
+  "status": "awaiting_analyst",
+  "numbers": {
+    "sender_sent_count_7d": 39,
+    "sender_received_count_7d": 5,
+    "sender_distinct_receivers_7d": 7,
+    "sender_distinct_payers_7d": 5,
+    "sender_sent_total_7d": 573312.98,
+    "sender_received_total_7d": 144381.43,
+    "sender_sent_count_1h": 2,
+    "sender_sent_count_24h": 2,
+    "sender_currencies_7d": 2,
+    "sender_cross_bank_share_7d": 0.9743589743589743,
+    "receiver_received_count_7d": 21,
+    "receiver_distinct_payers_7d": 7,
+    "receiver_sent_count_7d": 2,
+    "receiver_distinct_receivers_7d": 2,
+    "receiver_paid_sender_back_7d": 0,
+    "alert_amount": 8019.98
+  },
+  "sender_rows": [
+    {
+      "txn_id": 4556250,
+      "time": "2022-09-09 12:14:00",
+      "from": "0223/8119F8CC0",
+      "to": "0249118/811F73200",
+      "amount": 563.61,
+      "currency": "Saudi Riyal",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4559350,
+      "time": "2022-09-09 12:21:00",
+      "from": "0223/8119F8CC0",
+      "to": "0249118/811F73200",
+      "amount": 718.64,
+      "currency": "Saudi Riyal",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4631950,
+      "time": "2022-09-09 15:05:00",
+      "from": "0223/8119F8CC0",
+      "to": "0149340/8129D9390",
+      "amount": 16487.06,
+      "currency": "Saudi Riyal",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4639318,
+      "time": "2022-09-09 15:22:00",
+      "from": "0223/8119F8CC0",
+      "to": "0149340/8129D9390",
+      "amount": 59614.64,
+      "currency": "Saudi Riyal",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 4680274,
+      "time": "2022-09-09 16:54:00",
+      "from": "0223/8119F8CC0",
+      "to": "0049508/8127C3670",
+      "amount": 1557.66,
+      "currency": "Saudi Riyal",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4794670,
+      "time": "2022-09-09 21:11:00",
+      "from": "0223/8119F8CC0",
+      "to": "0118/811B76C90",
+      "amount": 7154.21,
+      "currency": "Saudi Riyal",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4798570,
+      "time": "2022-09-09 21:20:00",
+      "from": "0223/8119F8CC0",
+      "to": "0118/811B76C90",
+      "amount": 11083.56,
+      "currency": "Saudi Riyal",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4944313,
+      "time": "2022-09-10 07:26:00",
+      "from": "0223/8119F8CC0",
+      "to": "0049508/8127C3670",
+      "amount": 1557.66,
+      "currency": "Saudi Riyal",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 5077465,
+      "time": "2022-09-11 14:02:00",
+      "from": "0223/8119F8CC0",
+      "to": "0223/8119F8CC0",
+      "amount": 21293.7,
+      "currency": "Saudi Riyal",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5077466,
+      "time": "2022-09-11 14:02:00",
+      "from": "0223/8119F8CC0",
+      "to": "0228101/80B0C3F40",
+      "amount": 8019.98,
+      "currency": "Australian Dollar",
+      "format": "ACH"
+    }
+  ],
+  "receiver_rows": [
+    {
+      "txn_id": 3828836,
+      "time": "2022-09-08 04:14:00",
+      "from": "0228101/80A27F2F0",
+      "to": "0228101/80B0C3F40",
+      "amount": 429.21,
+      "currency": "Australian Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4035699,
+      "time": "2022-09-08 14:51:00",
+      "from": "0121/8000E1590",
+      "to": "0228101/80B0C3F40",
+      "amount": 24760.86,
+      "currency": "Australian Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 4050953,
+      "time": "2022-09-08 15:37:00",
+      "from": "0223/811A4DBD0",
+      "to": "0228101/80B0C3F40",
+      "amount": 21119.06,
+      "currency": "Australian Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 4645048,
+      "time": "2022-09-09 15:35:00",
+      "from": "0228101/80A27F2F0",
+      "to": "0228101/80B0C3F40",
+      "amount": 429.21,
+      "currency": "Australian Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4648526,
+      "time": "2022-09-09 15:43:00",
+      "from": "0228101/80A27F2F0",
+      "to": "0228101/80B0C3F40",
+      "amount": 2138.8,
+      "currency": "Australian Dollar",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4699628,
+      "time": "2022-09-09 17:37:00",
+      "from": "0027995/80A96EF20",
+      "to": "0228101/80B0C3F40",
+      "amount": 549.32,
+      "currency": "Australian Dollar",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4702849,
+      "time": "2022-09-09 17:44:00",
+      "from": "0027995/80A96EF20",
+      "to": "0228101/80B0C3F40",
+      "amount": 946.77,
+      "currency": "Australian Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4935076,
+      "time": "2022-09-10 06:18:00",
+      "from": "0228101/80A27F2F0",
+      "to": "0228101/80B0C3F40",
+      "amount": 429.21,
+      "currency": "Australian Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4935320,
+      "time": "2022-09-10 06:20:00",
+      "from": "0228101/80A27F2F0",
+      "to": "0228101/80B0C3F40",
+      "amount": 2138.8,
+      "currency": "Australian Dollar",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 5077466,
+      "time": "2022-09-11 14:02:00",
+      "from": "0223/8119F8CC0",
+      "to": "0228101/80B0C3F40",
+      "amount": 8019.98,
+      "currency": "Australian Dollar",
+      "format": "ACH"
+    }
+  ],
+  "findings": [
+    "Alert payment: 8019.98 Australian Dollar from 0223/8119F8CC0 to 0228101/80B0C3F40 at 2022-09-11 14:02:00 (model score 1.000).",
+    "Sender 0223/8119F8CC0 made 39 payments to 7 different accounts in the 7 days up to the alert, totalling 573312.98 (2 currencys; 97% crossed banks).",
+    "Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.",
+    "Sender 0223/8119F8CC0 received 5 payments from 5 different accounts, totalling 144381.43, in the 7 days.",
+    "Receiver 0228101/80B0C3F40 received 21 payments from 7 different accounts and sent 2 payments to 2 accounts in the 7 days.",
+    "Pattern check: Money paid to the receiver reaches the sender again after 3 payments."
+  ],
+  "case_note": "# Case note: IBM-5077466\n\n**Model score:** 1.000  ·  **Suggested typology:** Cycle\n\n## Computed findings\n- Alert payment: 8019.98 Australian Dollar from 0223/8119F8CC0 to 0228101/80B0C3F40 at 2022-09-11 14:02:00 (model score 1.000).\n- Sender 0223/8119F8CC0 made 39 payments to 7 different accounts in the 7 days up to the alert, totalling 573312.98 (2 currencys; 97% crossed banks).\n- Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.\n- Sender 0223/8119F8CC0 received 5 payments from 5 different accounts, totalling 144381.43, in the 7 days.\n- Receiver 0228101/80B0C3F40 received 21 payments from 7 different accounts and sent 2 payments to 2 accounts in the 7 days.\n- Pattern check: Money paid to the receiver reaches the sender again after 3 payments.\n\nEvidence rows shown: 3828836, 4035699, 4050953, 4556250, 4559350, 4631950, 4639318, 4645048, 4648526, 4680274, 4699628, 4702849, 4794670, 4798570, 4935076, 4935320, 4944313, 5077465, 5077466\n\n## Suggested next step\nRefer for review by a senior analyst before any action. Draft for analyst review. Nothing has been filed or sent.\n\n_Public IBM AML benchmark data (synthetic). Prototype, not certified for compliance._",
+  "report": "# DRAFT suspicious transaction report (not filed)\n\n**Alert:** IBM-5077466  ·  **Date:** 2022-09-11 14:02:00\n**Suggested typology:** Cycle\n**Accounts:** sender 0223/8119F8CC0, receiver 0228101/80B0C3F40\n\n## Grounds for referral\nThis payment is referred for review because the counted activity resembles the pattern named above:\n- Alert payment: 8019.98 Australian Dollar from 0223/8119F8CC0 to 0228101/80B0C3F40 at 2022-09-11 14:02:00 (model score 1.000).\n- Sender 0223/8119F8CC0 made 39 payments to 7 different accounts in the 7 days up to the alert, totalling 573312.98 (2 currencys; 97% crossed banks).\n- Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.\n- Sender 0223/8119F8CC0 received 5 payments from 5 different accounts, totalling 144381.43, in the 7 days.\n- Receiver 0228101/80B0C3F40 received 21 payments from 7 different accounts and sent 2 payments to 2 accounts in the 7 days.\n- Pattern check: Money paid to the receiver reaches the sender again after 3 payments.\n\n## Status\nDraft for analyst review. Nothing has been filed or sent.\n\n_Public IBM AML benchmark data (synthetic). Prototype, not certified for compliance._",
+  "steps": [
+    {
+      "number": 1,
+      "name": "Load alert",
+      "status": "done",
+      "summary": "Loaded IBM-5077466.",
+      "details": [
+        "Model score 1.000"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Fetch transactions",
+      "status": "done",
+      "summary": "Fetched 20 evidence rows.",
+      "details": [
+        "From 2022-09-08 04:14:00 to 2022-09-11 14:02:00."
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Compute findings",
+      "status": "done",
+      "summary": "Computed 6 findings.",
+      "details": [
+        "Alert payment: 8019.98 Australian Dollar from 0223/8119F8CC0 to 0228101/80B0C3F40 at 2022-09-11 14:02:00 (model score 1.000).",
+        "Sender 0223/8119F8CC0 made 39 payments to 7 different accounts in the 7 days up to the alert, totalling 573312.98 (2 currencys; 97% crossed banks).",
+        "Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.",
+        "Sender 0223/8119F8CC0 received 5 payments from 5 different accounts, totalling 144381.43, in the 7 days.",
+        "Receiver 0228101/80B0C3F40 received 21 payments from 7 different accounts and sent 2 payments to 2 accounts in the 7 days.",
+        "Pattern check: Money paid to the receiver reaches the sender again after 3 payments."
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Classify",
+      "status": "done",
+      "summary": "Suggested typology: Cycle.",
+      "details": []
+    },
+    {
+      "number": 5,
+      "name": "Draft case note and report",
+      "status": "done",
+      "summary": "Drafted the case note and a draft report.",
+      "details": []
+    },
+    {
+      "number": 6,
+      "name": "Analyst decision",
+      "status": "waiting",
+      "summary": "Waiting for the analyst. Nothing has been filed or sent.",
+      "details": []
+    }
+  ],
+  "true_typology": "CYCLE",
+  "typology_source": "graph",
+  "demo_role": "cycle"
+}

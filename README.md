@@ -1,0 +1,179 @@
+# AML Alert Investigator
+
+A small open language model, fine-tuned with QLoRA, that reads an anti-money-laundering alert and returns a typology, a risk level and a one-line reason. A fixed investigation workflow wraps it, and an analyst approves or overrides every verdict.
+
+**Status: in progress.** The five docs, the synthetic data generator, the features, the alert summaries, the dataset files and the rules baseline with scoring are done (143 tests). The model has been fine-tuned and scored on validation, test and held-out (table below). The adapter and dataset are published on Hugging Face. The six-step investigator workflow (case files, audit log, guarded exports) and the review app are built and live as a demo (link below), running on saved model answers. A "Live run" tab takes an uploaded transactions CSV and asks the hosted model; it needs the model server deployed, see "Live run" below.
+
+All data is synthetic. No real customer or transaction data is used anywhere. This is a prototype, not certified for any regulator's requirements.
+
+**Live demo:** [https://aml-alert-investigator.streamlit.app](https://aml-alert-investigator.streamlit.app) (saved model answers, no GPU; a shared demo on synthetic data; it sleeps when idle, so the first visit takes about 30 seconds)
+
+Published: [fine-tuned adapter](https://huggingface.co/coachuttam/aml-alert-investigator-qwen2.5-1.5b-qlora) · [synthetic dataset](https://huggingface.co/datasets/coachuttam/aml-alert-investigator-data) (both on Hugging Face)
+
+Docs: [PRD](PRD.md) · [Architecture](ARCHITECTURE.md) · [Design system](DESIGN_SYSTEM.md) · [Agent instructions](AGENTS.md)
+
+## What it will do
+
+1. **Generate** synthetic accounts with planted patterns: structuring, rapid pass-through, mule accounts, round-tripping, plus benign cases and hard negatives (legitimate activity that looks suspicious).
+2. **Compute** every count, amount and ratio in Python, and render an alert summary from them.
+3. **Fine-tune** Qwen2.5-1.5B-Instruct with QLoRA on Google Colab to return JSON: `typology`, `risk`, `reason`.
+4. **Compare** the fine-tuned model with threshold rules and the un-tuned base model on data it never saw.
+5. **Investigate** through six fixed steps, ending with the analyst's decision and an audit log. Each computed finding links to the transaction rows it was computed from, in the app and in the exported case note.
+
+The model labels and explains; Python counts. The model never produces a number that is not already in its input, and a check enforces it.
+
+![Architecture diagram](docs/architecture.png)
+
+Green boxes are built. Details are in [ARCHITECTURE.md](ARCHITECTURE.md).
+
+## Results
+
+Test shares its wording templates with the training data. Held-out uses new wording templates and incomes 1.6 times larger, and was scored once, after all training and rule choices were fixed. Nothing was tuned on it.
+
+| System | Macro-F1 (test) | Macro-F1 (held-out) | False alarms on normal alerts (test / held-out) | Valid JSON (test / held-out) | Risk accuracy (test / held-out) |
+| --- | --- | --- | --- | --- | --- |
+| A1. Rules, default thresholds | 0.962 | 0.948 | 8.1% / 14.2% | n/a | n/a |
+| A2. Rules, tuned on train | 0.990 | 0.990 | 0.0% / 1.7% | n/a | n/a |
+| B. Base model, prompted only | 0.135 | 0.181 | 100% / 100% | 88.5% / 72.0% | 23.8% / 23.3% |
+| C. Fine-tuned model | 1.000 | 0.936 | 0.0% / 8.3% | 100% / 99.7% | 99.8% / 99.7% |
+| D. Prompted Claude (optional) | not run | not run | not run | not run | not run |
+
+What the results say:
+- **Fine-tuning works.** The base model scores 0.135 on test (0.181 on held-out, with only 72% valid JSON) and never answers "no concern". The fine-tuned model scores 1.000 on test, with valid JSON, faithful reasons and the right risk level in almost every case.
+- **It did not beat the tuned rules on held-out.** The fine-tuned model scored 0.936 against 0.990 for the tuned rules, and was slightly below the default rules (0.948). The target in the PRD was for it to win; it did not.
+- **Where it slipped on held-out:** mule accounts (F1 0.83) and the "salary then commitments" look-alike, which it flagged 53% of the time (0% on test). Tuned rules read exact computed numbers, so new wording does not affect them. The model reads text, and the held-out wording and amounts were new to it.
+- **What held up:** valid JSON, faithful reasons and risk accuracy all stayed near 99.7%, and structuring stayed perfect.
+- **The task is easy by design.** The summary prints the numbers that decide the label, so a near-perfect test score is expected. Held-out is the real check, and it shows a generalisation gap.
+- The base model was told only the label names, with no definitions or examples, so it shows what training added, not what the best prompt could do.
+
+Next experiment (a clearly labelled v2, not a tweak of these numbers): add more wording styles and income scales to the training data, retrain, and score on a new held-out set.
+
+## IBM AML benchmark
+
+The same rules-versus-model question on the public IBM AML dataset (HI-Small, 5.08M transactions, 5,177 laundering). Code is in `src/ibm/`; the full report is `results/ibm_compare.md`. Temporal split 60/20/20 by time; the threshold and class weight are chosen on validation. Numbers are for the **test** period (base rate 0.18%).
+
+**Headline:** the model matches the rules' recall (28.3%) with **715 alerts instead of 167,778**, and at the rules' budget of 167,778 alerts it finds **97.8%** of laundering.
+
+| System | Alerts | Precision | Recall | Minority F1 | PR-AUC | Precision@100 |
+|---|---|---|---|---|---|---|
+| Rules (any of R1-R5) | 167,778 | 0.003 | 0.283 | 0.006 | n/a | n/a |
+| LightGBM | 1,655 | 0.532 | 0.490 | 0.510 | 0.460 | 0.95 |
+| Hybrid (model OR R3) | 18,383 | 0.052 | 0.533 | 0.095 | n/a | n/a |
+| LightGBM − payment format | 2,477 | 0.201 | 0.277 | 0.233 | 0.159 | 0.73 |
+
+![Recall versus alerts](results/ibm_recall_vs_alerts.png)
+
+- **Alert budget:** recall is 97.8% at 167,778 alerts, 89.7% at 50,000, 85.4% at 25,000, 74.2% at 10,000 and 49.0% at 1,655.
+- **Ablation caveat:** removing the payment format feature drops minority F1 from 0.510 to 0.233 and precision@100 from 0.95 to 0.73, so much of the model's edge comes from how the money moved (format), not only from account behaviour.
+- **Typology is still weak:** graph checks on the 7-day neighbourhood, with a classifier as fallback, name the typology correctly for 40% of test laundering rows (classifier alone 37%) and 7 of 19 on the top 20. The model also misses the laundering rows the patterns file does not describe (recall 1.3%).
+- **Original rupee task:** on held-out data the fine-tuned model scores 0.94 accuracy against 0.19 for the base model (`results/finetune_summary.md`; held-out answers are re-read, not re-run).
+- **Demo:** the `IBM alerts` tab lists three cached demo alerts first (clear fan-out, cycle, borderline; see `results/demo_alerts.md`), then the top 20 alerts, each with evidence, case note and a draft report. Nothing is filed or sent. Features use only past transactions (see `tests/test_ibm_leakage.py`).
+
+Run with `python -m src.ibm.compare` (about 15 minutes on a laptop; needs `data/HI-Small_Trans.csv` and `data/HI-Small_Patterns.txt`). `python -m src.ibm.demo_cache` rebuilds the demo cache.
+
+## Quick start
+
+Works today:
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python -m src.generator       # writes 3,400 synthetic alerts to data/raw/ (about a second)
+python -m src.dataset         # writes data/train.jsonl, validation.jsonl, test.jsonl, heldout.jsonl
+python -m pytest -q           # 143 tests
+python -m src.evaluate        # scores the rules and the saved model answers on validation and test
+streamlit run app.py          # opens the review app (uses the saved answers in results/)
+```
+
+Training runs on Colab (a free T4 GPU is enough for the 1.5B model); heavy libraries are kept out of the laptop requirements.
+
+## Live run
+
+The "Live run" tab reads a transactions CSV (`day,amount,direction,channel,counterparty`; a sample is in `data/sample_upload.csv`), computes the features in Python, asks the fine-tuned model and shows the checked answer like any saved alert. The app has no GPU, so the model runs on [Modal](https://modal.com) and sleeps when idle:
+
+```bash
+pip install modal && modal setup
+modal deploy model_server.py      # prints the endpoint address
+```
+
+Then create a proxy auth token in the Modal dashboard and give the app three settings (environment variables locally, Secrets on Streamlit Community Cloud): `AML_MODEL_URL`, `AML_MODEL_KEY`, `AML_MODEL_SECRET`. Without them, or if the model does not answer, an upload goes to "needs review" and the rules and computed findings still run. The first call after a sleep takes about a minute. `model_server.py` has not been run in CI; check it after deploying.
+
+To run the model on your own computer instead (no cloud, nothing leaves the machine):
+
+```bash
+pip install -r requirements-local.txt
+AML_LOCAL_MODEL=1 streamlit run app.py
+```
+
+The first live run downloads the base model (about 3 GB) and takes a few minutes; later runs answer in seconds. On a Mac the base model is loaded at half precision, not the 4-bit copy used for the published scores, so answers should match closely but this setup was not the one scored.
+
+## Layout
+
+```
+aml-alert-investigator/
+├─ PRD.md  ARCHITECTURE.md  AGENTS.md  DESIGN_SYSTEM.md  README.md
+├─ src/        models.py  names.py  patterns.py  generator.py  schema.py   (done)
+│              money.py  features.py  templates.py  dataset.py           (done)
+│              metrics.py  rules.py  evaluate.py  prompt.py  finetune.py (written)
+│              predict.py review.py review_scores.py (done)
+│              investigator.py case_note.py case_store.py audit.py (done)
+│              evidence.py                                          (finding → rows)
+│              build_space.py publish.py                            (publishing)
+│              upload.py  live.py  remote_model.py  local_model.py       (live run)
+├─ notebooks/  finetune_qlora.ipynb      (thin Colab wrapper)
+├─ data/       train, validation, test and held-out sets
+├─ tests/
+├─ app.py  evidence_view.py  upload_view.py   (review app, finding rows, "Live run" tab)
+└─ model_server.py                       (hosts the model on Modal)
+```
+
+## Design choices
+
+- **Honest evaluation.** Customers are split before any data is generated, and each belongs to exactly one set. The held-out set also uses reserved wording templates and amount ranges, and is run once at the end.
+- **Hard negatives.** Legitimate look-alikes are in the training and test data, so the false-positive rate is measured, not hoped for.
+- **Fixed workflow, not a free-roaming agent.** Small models call tools unreliably, so the model is used as the classifier inside a predictable sequence. An LLM planner is a later upgrade.
+- **Findings point at their rows.** Python records which transactions each finding was computed from, using the same thresholds as the features. The analyst can open any finding and see them, and the case note lists their ids.
+- **Review, never accuse.** The system says "refer for review". Nothing is filed or sent without the analyst.
+- **Readable code.** Plain names, short functions, docstrings and named constants, so every file can be read and explained.
+
+## What production would need
+
+This is a prototype. The gaps below are the work between it and something a bank could run. They are listed because knowing them is part of the job.
+
+**Deployment inside the bank.** Customer transactions cannot leave the bank's control, so the model has to run on their hardware or inside their own cloud account. The classifier is an open-weights model with a 74 MB adapter, so this is a deployment question, not a licensing one — no request leaves the building. Today it runs on a laptop or a hosted GPU.
+
+**Audit store.** Every step, model answer and analyst decision is already logged, but to local JSON lines. A bank needs an append-only store with retention set by policy, where a record cannot be altered after it is written, and the log has to survive the application being redeployed.
+
+**Model validation.** RBI's draft Guidance on Regulatory Principles for Model Risk Management (June 2026, under consultation at the time of writing) extends model governance to AI and ML models used in fraud and AML monitoring, and asks for board-approved governance, independent validation and human oversight of model-driven decisions. In practice that means a documented development process, a challenger model and sign-off before use. The rules baseline here is already a working challenger, and the held-out evaluation is already independent of training. What is missing is the documentation and the sign-off.
+
+**Monitoring.** Scores on synthetic data say nothing about live accuracy. In production the signals to watch are input drift (transaction mixes change), alert volume per typology, the rate at which the output checker rejects an answer, and above all the analyst override rate, which is the only continuous measure of whether the model is still right.
+
+**Data handling.** Names and account numbers need masking before they reach the model, encryption at rest, and access scoped by role. Nothing here calls a third-party API at inference time, which keeps that surface small.
+
+**Filing.** Under Section 12 of the PMLA, suspicious transactions are reported to FIU-IND, electronically through FINnet 2.0. A production system would draft that report from the case file for a human to review and submit. This system deliberately stops earlier: it says "refer for review" and files nothing.
+
+## Security and privacy
+
+- Synthetic data only; no real customer data and no credentials in the repository.
+- Training happens on Colab with synthetic data. Secrets (such as a GitHub or Hugging Face token) are kept in Colab Secrets, never in notebooks.
+- No customer data is sent to any external service at inference time unless the optional prompted-Claude baseline is run, which uses synthetic alerts only.
+
+## AI tools used and key workflows
+
+Built with Claude (Anthropic) as a coding assistant. The classifier is a fine-tuned open-weights model (Qwen2.5-1.5B-Instruct as the starting point; check the base model's licence before publishing merged weights). The key workflow is: generate data, compute features, validate outputs, then evaluate against the baselines. ARCHITECTURE.md describes each step.
+
+## Limitations
+
+- Scores are on synthetic data and say nothing about real-world accuracy.
+- Thresholds are illustrative, not regulatory.
+- The analyst's decisions live in session state and are lost when the session ends.
+- The sample alerts use saved verdicts. Live uploads need the hosted model, which takes about a minute to wake.
+- An uploaded file must already use the eight channel names the generator uses; real bank exports would need a mapping step.
+
+## Roadmap
+
+Week 0 practice fine-tune · Week 1 data and rules baseline · Week 2 first fine-tune · Week 3 evaluation · Week 4 workflow and app · Week 5 publish.
+
+## Licence
+
+Code: MIT (see LICENSE). The published adapter and dataset are Apache-2.0. The base model, Qwen2.5-1.5B-Instruct, is Apache-2.0 under its own terms.

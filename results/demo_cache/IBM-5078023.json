@@ -1,0 +1,238 @@
+{
+  "alert_id": "IBM-5078023",
+  "txn_id": 5078023,
+  "time": "2022-09-13 12:57:00",
+  "sender": "0232391/80C8966E0",
+  "receiver": "0027954/80DADEFF0",
+  "amount": 1247008.84,
+  "currency": "US Dollar",
+  "score": 1.0,
+  "typology": "FAN_OUT",
+  "reason": "The sender paid 9 different accounts in 7 days.",
+  "status": "awaiting_analyst",
+  "numbers": {
+    "sender_sent_count_7d": 12,
+    "sender_received_count_7d": 4,
+    "sender_distinct_receivers_7d": 9,
+    "sender_distinct_payers_7d": 1,
+    "sender_sent_total_7d": 2432394.2700000005,
+    "sender_received_total_7d": 1104050.9200000002,
+    "sender_sent_count_1h": 2,
+    "sender_sent_count_24h": 2,
+    "sender_currencies_7d": 3,
+    "sender_cross_bank_share_7d": 0.6666666666666666,
+    "receiver_received_count_7d": 5,
+    "receiver_distinct_payers_7d": 5,
+    "receiver_sent_count_7d": 0,
+    "receiver_distinct_receivers_7d": 0,
+    "receiver_paid_sender_back_7d": 0,
+    "alert_amount": 1247008.84
+  },
+  "sender_rows": [
+    {
+      "txn_id": 4908523,
+      "time": "2022-09-10 03:04:00",
+      "from": "0232391/80C8966E0",
+      "to": "01522/801C7C860",
+      "amount": 11666.56,
+      "currency": "Euro",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 4942841,
+      "time": "2022-09-10 07:16:00",
+      "from": "0232391/80C8966E0",
+      "to": "0232391/80C8966E0",
+      "amount": 15029.81,
+      "currency": "Euro",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 4942842,
+      "time": "2022-09-10 07:16:00",
+      "from": "0232391/80C8966E0",
+      "to": "0139793/80F519ED0",
+      "amount": 16114.69,
+      "currency": "Swiss Franc",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5016836,
+      "time": "2022-09-10 16:26:00",
+      "from": "0232391/80C8966E0",
+      "to": "012004/8014EA0D0",
+      "amount": 5620.46,
+      "currency": "Euro",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5020322,
+      "time": "2022-09-10 16:53:00",
+      "from": "0232391/80C8966E0",
+      "to": "0115656/806D3C9E0",
+      "amount": 2539.57,
+      "currency": "Euro",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5049625,
+      "time": "2022-09-10 20:34:00",
+      "from": "0232391/80C8966E0",
+      "to": "0025960/80A6A9B40",
+      "amount": 16305.14,
+      "currency": "Euro",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5077715,
+      "time": "2022-09-12 09:29:00",
+      "from": "0232391/80C8966E0",
+      "to": "0232391/80C8966E0",
+      "amount": 7929.62,
+      "currency": "Euro",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5077716,
+      "time": "2022-09-12 09:29:00",
+      "from": "0232391/80C8966E0",
+      "to": "001244/803421B00",
+      "amount": 9291.8,
+      "currency": "US Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5078022,
+      "time": "2022-09-13 12:57:00",
+      "from": "0232391/80C8966E0",
+      "to": "0232391/80C8966E0",
+      "amount": 1064197.34,
+      "currency": "Euro",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5078023,
+      "time": "2022-09-13 12:57:00",
+      "from": "0232391/80C8966E0",
+      "to": "0027954/80DADEFF0",
+      "amount": 1247008.84,
+      "currency": "US Dollar",
+      "format": "ACH"
+    }
+  ],
+  "receiver_rows": [
+    {
+      "txn_id": 3295458,
+      "time": "2022-09-07 01:37:00",
+      "from": "0114674/80DADF3A0",
+      "to": "0027954/80DADEFF0",
+      "amount": 285.72,
+      "currency": "US Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 3299953,
+      "time": "2022-09-07 01:51:00",
+      "from": "0036208/80DADCAF0",
+      "to": "0027954/80DADEFF0",
+      "amount": 4681.03,
+      "currency": "US Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 3301295,
+      "time": "2022-09-07 01:55:00",
+      "from": "011813/80DADEF50",
+      "to": "0027954/80DADEFF0",
+      "amount": 3153.58,
+      "currency": "US Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 3302326,
+      "time": "2022-09-07 01:58:00",
+      "from": "0237199/80DADF040",
+      "to": "0027954/80DADEFF0",
+      "amount": 1505.63,
+      "currency": "US Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 5078023,
+      "time": "2022-09-13 12:57:00",
+      "from": "0232391/80C8966E0",
+      "to": "0027954/80DADEFF0",
+      "amount": 1247008.84,
+      "currency": "US Dollar",
+      "format": "ACH"
+    }
+  ],
+  "findings": [
+    "Alert payment: 1247008.84 US Dollar from 0232391/80C8966E0 to 0027954/80DADEFF0 at 2022-09-13 12:57:00 (model score 1.000).",
+    "Sender 0232391/80C8966E0 made 12 payments to 9 different accounts in the 7 days up to the alert, totalling 2432394.27 (3 currencys; 67% crossed banks).",
+    "Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.",
+    "Sender 0232391/80C8966E0 received 4 payments from 1 different account, totalling 1104050.92, in the 7 days.",
+    "Receiver 0027954/80DADEFF0 received 5 payments from 5 different accounts and sent 0 payments to 0 accounts in the 7 days.",
+    "Pattern check: The sender paid 9 different accounts in 7 days."
+  ],
+  "case_note": "# Case note: IBM-5078023\n\n**Model score:** 1.000  ·  **Suggested typology:** Fan-out\n\n## Computed findings\n- Alert payment: 1247008.84 US Dollar from 0232391/80C8966E0 to 0027954/80DADEFF0 at 2022-09-13 12:57:00 (model score 1.000).\n- Sender 0232391/80C8966E0 made 12 payments to 9 different accounts in the 7 days up to the alert, totalling 2432394.27 (3 currencys; 67% crossed banks).\n- Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.\n- Sender 0232391/80C8966E0 received 4 payments from 1 different account, totalling 1104050.92, in the 7 days.\n- Receiver 0027954/80DADEFF0 received 5 payments from 5 different accounts and sent 0 payments to 0 accounts in the 7 days.\n- Pattern check: The sender paid 9 different accounts in 7 days.\n\nEvidence rows shown: 3295458, 3299953, 3301295, 3302326, 4908523, 4942841, 4942842, 5016836, 5020322, 5049625, 5077715, 5077716, 5078022, 5078023\n\n## Suggested next step\nRefer for review by a senior analyst before any action. Draft for analyst review. Nothing has been filed or sent.\n\n_Public IBM AML benchmark data (synthetic). Prototype, not certified for compliance._",
+  "report": "# DRAFT suspicious transaction report (not filed)\n\n**Alert:** IBM-5078023  ·  **Date:** 2022-09-13 12:57:00\n**Suggested typology:** Fan-out\n**Accounts:** sender 0232391/80C8966E0, receiver 0027954/80DADEFF0\n\n## Grounds for referral\nThis payment is referred for review because the counted activity resembles the pattern named above:\n- Alert payment: 1247008.84 US Dollar from 0232391/80C8966E0 to 0027954/80DADEFF0 at 2022-09-13 12:57:00 (model score 1.000).\n- Sender 0232391/80C8966E0 made 12 payments to 9 different accounts in the 7 days up to the alert, totalling 2432394.27 (3 currencys; 67% crossed banks).\n- Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.\n- Sender 0232391/80C8966E0 received 4 payments from 1 different account, totalling 1104050.92, in the 7 days.\n- Receiver 0027954/80DADEFF0 received 5 payments from 5 different accounts and sent 0 payments to 0 accounts in the 7 days.\n- Pattern check: The sender paid 9 different accounts in 7 days.\n\n## Status\nDraft for analyst review. Nothing has been filed or sent.\n\n_Public IBM AML benchmark data (synthetic). Prototype, not certified for compliance._",
+  "steps": [
+    {
+      "number": 1,
+      "name": "Load alert",
+      "status": "done",
+      "summary": "Loaded IBM-5078023.",
+      "details": [
+        "Model score 1.000"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Fetch transactions",
+      "status": "done",
+      "summary": "Fetched 15 evidence rows.",
+      "details": [
+        "From 2022-09-07 01:37:00 to 2022-09-13 12:57:00."
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Compute findings",
+      "status": "done",
+      "summary": "Computed 6 findings.",
+      "details": [
+        "Alert payment: 1247008.84 US Dollar from 0232391/80C8966E0 to 0027954/80DADEFF0 at 2022-09-13 12:57:00 (model score 1.000).",
+        "Sender 0232391/80C8966E0 made 12 payments to 9 different accounts in the 7 days up to the alert, totalling 2432394.27 (3 currencys; 67% crossed banks).",
+        "Sender velocity: 2 payments in the last hour and 2 in the last 24 hours.",
+        "Sender 0232391/80C8966E0 received 4 payments from 1 different account, totalling 1104050.92, in the 7 days.",
+        "Receiver 0027954/80DADEFF0 received 5 payments from 5 different accounts and sent 0 payments to 0 accounts in the 7 days.",
+        "Pattern check: The sender paid 9 different accounts in 7 days."
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Classify",
+      "status": "done",
+      "summary": "Suggested typology: Fan-out.",
+      "details": []
+    },
+    {
+      "number": 5,
+      "name": "Draft case note and report",
+      "status": "done",
+      "summary": "Drafted the case note and a draft report.",
+      "details": []
+    },
+    {
+      "number": 6,
+      "name": "Analyst decision",
+      "status": "waiting",
+      "summary": "Waiting for the analyst. Nothing has been filed or sent.",
+      "details": []
+    }
+  ],
+  "true_typology": "FAN_OUT",
+  "typology_source": "graph",
+  "demo_role": "clear fan-out"
+}

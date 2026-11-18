@@ -1,0 +1,254 @@
+{
+  "alert_id": "IBM-4355742",
+  "txn_id": 4355742,
+  "time": "2022-09-09 04:45:00",
+  "sender": "010/80012FD40",
+  "receiver": "016/8058AF4B0",
+  "amount": 41043106.82,
+  "currency": "Rupee",
+  "score": 1.0,
+  "typology": "GATHER_SCATTER",
+  "reason": "",
+  "status": "awaiting_analyst",
+  "numbers": {
+    "sender_sent_count_7d": 13,
+    "sender_received_count_7d": 9,
+    "sender_distinct_receivers_7d": 4,
+    "sender_distinct_payers_7d": 9,
+    "sender_sent_total_7d": 41618645.78,
+    "sender_received_total_7d": 559341.3200000001,
+    "sender_sent_count_1h": 2,
+    "sender_sent_count_24h": 5,
+    "sender_currencies_7d": 2,
+    "sender_cross_bank_share_7d": 0.9230769230769231,
+    "receiver_received_count_7d": 7,
+    "receiver_distinct_payers_7d": 7,
+    "receiver_sent_count_7d": 0,
+    "receiver_distinct_receivers_7d": 0,
+    "receiver_paid_sender_back_7d": 0,
+    "alert_amount": 41043106.82
+  },
+  "sender_rows": [
+    {
+      "txn_id": 3162020,
+      "time": "2022-09-06 19:31:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1632.53,
+      "currency": "US Dollar",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 3166050,
+      "time": "2022-09-06 19:43:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1480.45,
+      "currency": "US Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 3598809,
+      "time": "2022-09-07 17:09:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1480.45,
+      "currency": "US Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 3599147,
+      "time": "2022-09-07 17:10:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1632.53,
+      "currency": "US Dollar",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 3837748,
+      "time": "2022-09-08 04:42:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1480.45,
+      "currency": "US Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 3841879,
+      "time": "2022-09-08 04:55:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1632.53,
+      "currency": "US Dollar",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4269377,
+      "time": "2022-09-09 01:31:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1632.53,
+      "currency": "US Dollar",
+      "format": "Cheque"
+    },
+    {
+      "txn_id": 4276177,
+      "time": "2022-09-09 01:46:00",
+      "from": "010/80012FD40",
+      "to": "01292/800193840",
+      "amount": 1480.45,
+      "currency": "US Dollar",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4355741,
+      "time": "2022-09-09 04:45:00",
+      "from": "010/80012FD40",
+      "to": "010/80012FD40",
+      "amount": 558835.4,
+      "currency": "US Dollar",
+      "format": "ACH"
+    },
+    {
+      "txn_id": 4355742,
+      "time": "2022-09-09 04:45:00",
+      "from": "010/80012FD40",
+      "to": "016/8058AF4B0",
+      "amount": 41043106.82,
+      "currency": "Rupee",
+      "format": "ACH"
+    }
+  ],
+  "receiver_rows": [
+    {
+      "txn_id": 2768974,
+      "time": "2022-09-06 00:02:00",
+      "from": "0013157/805E63360",
+      "to": "016/8058AF4B0",
+      "amount": 284.28,
+      "currency": "Rupee",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 3250270,
+      "time": "2022-09-07 00:01:00",
+      "from": "0214308/80595E7F0",
+      "to": "016/8058AF4B0",
+      "amount": 2628.79,
+      "currency": "Rupee",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 3257494,
+      "time": "2022-09-07 00:10:00",
+      "from": "007/804A3ABA0",
+      "to": "016/8058AF4B0",
+      "amount": 1677.68,
+      "currency": "Rupee",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 3263921,
+      "time": "2022-09-07 00:18:00",
+      "from": "0115678/805E81750",
+      "to": "016/8058AF4B0",
+      "amount": 20148.72,
+      "currency": "Rupee",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 3754053,
+      "time": "2022-09-08 00:27:00",
+      "from": "0216343/805F47200",
+      "to": "016/8058AF4B0",
+      "amount": 1118.76,
+      "currency": "Rupee",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4221649,
+      "time": "2022-09-09 00:07:00",
+      "from": "0013078/805954D00",
+      "to": "016/8058AF4B0",
+      "amount": 519.01,
+      "currency": "Rupee",
+      "format": "Credit Card"
+    },
+    {
+      "txn_id": 4355742,
+      "time": "2022-09-09 04:45:00",
+      "from": "010/80012FD40",
+      "to": "016/8058AF4B0",
+      "amount": 41043106.82,
+      "currency": "Rupee",
+      "format": "ACH"
+    }
+  ],
+  "findings": [
+    "Alert payment: 41043106.82 Rupee from 010/80012FD40 to 016/8058AF4B0 at 2022-09-09 04:45:00 (model score 1.000).",
+    "Sender 010/80012FD40 made 13 payments to 4 different accounts in the 7 days up to the alert, totalling 41618645.78 (2 currencys; 92% crossed banks).",
+    "Sender velocity: 2 payments in the last hour and 5 in the last 24 hours.",
+    "Sender 010/80012FD40 received 9 payments from 9 different accounts, totalling 559341.32, in the 7 days.",
+    "Receiver 016/8058AF4B0 received 7 payments from 7 different accounts and sent 0 payments to 0 accounts in the 7 days."
+  ],
+  "case_note": "# Case note: IBM-4355742\n\n**Model score:** 1.000  ·  **Suggested typology:** Gather-scatter\n\n## Computed findings\n- Alert payment: 41043106.82 Rupee from 010/80012FD40 to 016/8058AF4B0 at 2022-09-09 04:45:00 (model score 1.000).\n- Sender 010/80012FD40 made 13 payments to 4 different accounts in the 7 days up to the alert, totalling 41618645.78 (2 currencys; 92% crossed banks).\n- Sender velocity: 2 payments in the last hour and 5 in the last 24 hours.\n- Sender 010/80012FD40 received 9 payments from 9 different accounts, totalling 559341.32, in the 7 days.\n- Receiver 016/8058AF4B0 received 7 payments from 7 different accounts and sent 0 payments to 0 accounts in the 7 days.\n\nEvidence rows shown: 2768974, 3162020, 3166050, 3250270, 3257494, 3263921, 3598809, 3599147, 3754053, 3837748, 3841879, 4221649, 4269377, 4276177, 4355741, 4355742\n\n## Suggested next step\nRefer for review by a senior analyst before any action. Draft for analyst review. Nothing has been filed or sent.\n\n_Public IBM AML benchmark data (synthetic). Prototype, not certified for compliance._",
+  "report": "# DRAFT suspicious transaction report (not filed)\n\n**Alert:** IBM-4355742  ·  **Date:** 2022-09-09 04:45:00\n**Suggested typology:** Gather-scatter\n**Accounts:** sender 010/80012FD40, receiver 016/8058AF4B0\n\n## Grounds for referral\nThis payment is referred for review because the counted activity resembles the pattern named above:\n- Alert payment: 41043106.82 Rupee from 010/80012FD40 to 016/8058AF4B0 at 2022-09-09 04:45:00 (model score 1.000).\n- Sender 010/80012FD40 made 13 payments to 4 different accounts in the 7 days up to the alert, totalling 41618645.78 (2 currencys; 92% crossed banks).\n- Sender velocity: 2 payments in the last hour and 5 in the last 24 hours.\n- Sender 010/80012FD40 received 9 payments from 9 different accounts, totalling 559341.32, in the 7 days.\n- Receiver 016/8058AF4B0 received 7 payments from 7 different accounts and sent 0 payments to 0 accounts in the 7 days.\n\n## Status\nDraft for analyst review. Nothing has been filed or sent.\n\n_Public IBM AML benchmark data (synthetic). Prototype, not certified for compliance._",
+  "steps": [
+    {
+      "number": 1,
+      "name": "Load alert",
+      "status": "done",
+      "summary": "Loaded IBM-4355742.",
+      "details": [
+        "Model score 1.000"
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Fetch transactions",
+      "status": "done",
+      "summary": "Fetched 17 evidence rows.",
+      "details": [
+        "From 2022-09-06 00:02:00 to 2022-09-09 04:45:00."
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Compute findings",
+      "status": "done",
+      "summary": "Computed 5 findings.",
+      "details": [
+        "Alert payment: 41043106.82 Rupee from 010/80012FD40 to 016/8058AF4B0 at 2022-09-09 04:45:00 (model score 1.000).",
+        "Sender 010/80012FD40 made 13 payments to 4 different accounts in the 7 days up to the alert, totalling 41618645.78 (2 currencys; 92% crossed banks).",
+        "Sender velocity: 2 payments in the last hour and 5 in the last 24 hours.",
+        "Sender 010/80012FD40 received 9 payments from 9 different accounts, totalling 559341.32, in the 7 days.",
+        "Receiver 016/8058AF4B0 received 7 payments from 7 different accounts and sent 0 payments to 0 accounts in the 7 days."
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Classify",
+      "status": "done",
+      "summary": "Suggested typology: Gather-scatter.",
+      "details": []
+    },
+    {
+      "number": 5,
+      "name": "Draft case note and report",
+      "status": "done",
+      "summary": "Drafted the case note and a draft report.",
+      "details": []
+    },
+    {
+      "number": 6,
+      "name": "Analyst decision",
+      "status": "waiting",
+      "summary": "Waiting for the analyst. Nothing has been filed or sent.",
+      "details": []
+    }
+  ],
+  "true_typology": "NONE",
+  "typology_source": "classifier",
+  "demo_role": "borderline"
+}

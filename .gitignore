@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.DS_Store
+.env
+# The raw training alerts are large and regenerate exactly from the seed.
+# The other raw files are committed so the hosted demo can show transactions.
+data/raw/train.jsonl
+
+# Analyst decisions are local logs, not part of the repo.
+audit/
+space_build/
+data/
+*.csv
+.env
+venv/
+.venv/
+__pycache__/
