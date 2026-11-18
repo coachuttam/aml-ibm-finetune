@@ -40,9 +40,10 @@ def classify_with_retry(summary: str, generate: GenerateFunction) -> CheckedAnsw
     return check_answer(generate(summary), summary)
 
 
-def load_model(adapter_folder: Optional[str], base_model: str = BASE_MODEL):
+def load_model(adapter_folder: Optional[str], base_model: str = BASE_MODEL, messages_for=build_messages):
     """Load the base model (plus the adapter, if given).
 
+    `messages_for` turns one input text into chat messages; the IBM task passes its own.
     Returns two functions: one answers a single summary, one answers a list of summaries
     at once, which is much faster on a GPU.
     """
@@ -61,7 +62,7 @@ def load_model(adapter_folder: Optional[str], base_model: str = BASE_MODEL):
     model.eval()
 
     def generate_batch(summaries: List[str]) -> List[str]:
-        prompts = [tokenizer.apply_chat_template(build_messages(s), tokenize=False,
+        prompts = [tokenizer.apply_chat_template(messages_for(s), tokenize=False,
                                                  add_generation_prompt=True) for s in summaries]
         inputs = tokenizer(prompts, return_tensors="pt", padding=True).to(model.device)
         with torch.no_grad():
