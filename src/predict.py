@@ -40,7 +40,8 @@ def classify_with_retry(summary: str, generate: GenerateFunction) -> CheckedAnsw
     return check_answer(generate(summary), summary)
 
 
-def load_model(adapter_folder: Optional[str], base_model: str = BASE_MODEL, messages_for=build_messages):
+def load_model(adapter_folder: Optional[str], base_model: str = BASE_MODEL, messages_for=build_messages,
+               compute_dtype=None):
     """Load the base model (plus the adapter, if given).
 
     `messages_for` turns one input text into chat messages; the IBM task passes its own.
@@ -53,7 +54,7 @@ def load_model(adapter_folder: Optional[str], base_model: str = BASE_MODEL, mess
     tokenizer = AutoTokenizer.from_pretrained(base_model)
     tokenizer.padding_side = "left"          # so every answer starts right after its own prompt
     quantisation = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4",
-                                      bnb_4bit_compute_dtype=torch.float16)
+                                      bnb_4bit_compute_dtype=compute_dtype or torch.float16)
     model = AutoModelForCausalLM.from_pretrained(
         base_model, quantization_config=quantisation, device_map={"": 0})
     if adapter_folder:

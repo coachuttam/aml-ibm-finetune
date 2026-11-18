@@ -32,7 +32,7 @@ SYSTEMS = {
 REPORT_PATH = RESULTS_FOLDER / "ibm_sft_eval.md"
 REFERENCE_GRAPH_ACCURACY = 0.40  # 542 of 1,339 laundering rows, results/ibm_compare.md (all test-period rows)
 UNFAITHFUL_PROBLEM = "note uses a number that is not in the input"
-BATCH_SIZE = 8  # inputs are about 800 tokens; 8 at once fits a T4
+BATCH_SIZE = 16  # inputs are about 800 tokens; 16 at once fits an L4 (24 GB) in 4-bit
 MAX_NEW_TOKENS = 160  # the answer is about 90 tokens
 
 
@@ -128,7 +128,9 @@ def score(results_folder: Path = RESULTS_FOLDER) -> str:
 def generate(adapter: Optional[str], output: Path, limit: Optional[int]) -> None:
     """Run a model over the test inputs (GPU). An invalid answer is retried once on its own."""
     examples = load_examples("test")[:limit]
-    _, generate_batch = load_model(adapter, BASE_MODEL, messages_for=build_messages)
+    from src.ibm.finetune_ibm import pick_precision
+
+    _, generate_batch = load_model(adapter, BASE_MODEL, messages_for=build_messages, compute_dtype=pick_precision()[0])
     rows = []
     for start in range(0, len(examples), BATCH_SIZE):
         chunk = examples[start : start + BATCH_SIZE]

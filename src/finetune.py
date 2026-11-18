@@ -58,15 +58,17 @@ def pad_batch(batch: List[Dict[str, List[int]]], pad_token_id: int) -> dict:
     return {key: torch.tensor(values) for key, values in padded.items()}
 
 
-def load_model_and_tokenizer(base_model: str):
-    """Load the base model in 4-bit and attach small trainable LoRA layers."""
+def load_model_and_tokenizer(base_model: str, compute_dtype=None):
+    """Load the base model in 4-bit and attach small trainable LoRA layers.
+
+    `compute_dtype` defaults to float16 (a T4 cannot do bfloat16); L4 and A100 can pass bfloat16."""
     import torch
     from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
     quantisation = BitsAndBytesConfig(
         load_in_4bit=True, bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.float16,       # a T4 cannot do bfloat16
+        bnb_4bit_compute_dtype=compute_dtype or torch.float16,
         bnb_4bit_use_double_quant=True)
     tokenizer = AutoTokenizer.from_pretrained(base_model)
     if tokenizer.pad_token is None:

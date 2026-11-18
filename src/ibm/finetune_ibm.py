@@ -4,8 +4,8 @@
 
 Same base model and QLoRA settings as src/finetune.py (it is imported, not copied). Differences:
 the prompt and answer come from src/ibm/sft_format.py, inputs are longer so the sequence limit is
-higher, and batches are smaller to fit a T4. Only train.jsonl is learned from; val.jsonl only
-watches the loss. test.jsonl is never read here.
+higher, the precision is bf16 when the GPU supports it, and the batch size follows GPU memory.
+Only train.jsonl is learned from; val.jsonl only watches the loss. test.jsonl is never read here.
 If Colab disconnects, run the same command again: it resumes from the newest checkpoint.
 """
 
@@ -28,12 +28,37 @@ from src.ibm.sft_format import build_messages
 
 MAX_SEQ_LENGTH = 1280  # inputs plus system prompt plus answer measure about 800 tokens (digits cost one token each)
 EPOCHS = 3  # small dataset, so a few passes; watch eval_loss and stop if it rises
-BATCH_SIZE = 2  # long inputs: batch 2 fits a 15 GB T4
-EVAL_BATCH_SIZE = 2
-ACCUMULATION_STEPS = 8  # effective batch of 16, the same as the rupee run
+EFFECTIVE_BATCH_SIZE = 16  # the same as the rupee run; the per-step batch changes with the GPU, this does not
+# (minimum GPU memory in GB, examples per step). Chosen so the 151k-word-piece output layer still fits;
+# an L4 has 24 GB, an A100 40 or 80 GB, a T4 15 GB.
+BATCH_SIZE_BY_MEMORY = ((35.0, 8), (20.0, 4), (0.0, 2))
 SAVE_EVERY_STEPS = 25  # about every 4 minutes; a disconnect loses little
 WARMUP_STEPS = 10  # a short ramp-up; about 4% of the run
 VALIDATION_LIMIT = 150  # evaluating on every validation row each time would cost minutes
+
+
+def pick_batch_size(gpu_memory_gb: float) -> int:
+    """Examples per step for a GPU with this much memory. The rest of the 16 comes from accumulation."""
+    for minimum_gb, batch_size in BATCH_SIZE_BY_MEMORY:
+        if gpu_memory_gb >= minimum_gb:
+            return batch_size
+    return BATCH_SIZE_BY_MEMORY[-1][1]
+
+
+def pick_precision():
+    """(compute dtype, uses_bf16): bfloat16 when the GPU supports it (L4, A100), else float16 (T4)."""
+    import torch
+
+    if torch.cuda.is_bf16_supported():
+        return torch.bfloat16, True
+    return torch.float16, False
+
+
+def gpu_memory_gb() -> float:
+    """Total memory of the first GPU, in GB."""
+    import torch
+
+    return torch.cuda.get_device_properties(0).total_memory / 1e9
 
 
 def tokenize_example(example: dict, tokenizer, max_length: int = MAX_SEQ_LENGTH) -> Dict[str, List[int]]:
@@ -55,11 +80,19 @@ def tokenize_example(example: dict, tokenizer, max_length: int = MAX_SEQ_LENGTH)
     return {"input_ids": input_ids, "attention_mask": [1] * len(input_ids), "labels": labels}
 
 
-def train(data_folder: Path, output_dir: Path, base_model: str, epochs: int, limit: Optional[int]) -> None:
+def train(
+    data_folder: Path, output_dir: Path, base_model: str, epochs: int, limit: Optional[int], batch_size: Optional[int]
+) -> None:
     """Fine-tune and save the adapter into output_dir/adapter."""
     from transformers import Trainer, TrainingArguments
 
-    model, tokenizer = load_model_and_tokenizer(base_model)
+    compute_dtype, use_bf16 = pick_precision()
+    batch_size = batch_size or pick_batch_size(gpu_memory_gb())
+    accumulation_steps = EFFECTIVE_BATCH_SIZE // batch_size
+    print(
+        "Precision: %s; batch %d x accumulation %d" % ("bf16" if use_bf16 else "fp16", batch_size, accumulation_steps)
+    )
+    model, tokenizer = load_model_and_tokenizer(base_model, compute_dtype)
     train_rows = load_examples("train", data_folder)[:limit]
     validation_rows = load_examples("val", data_folder)[: (limit or VALIDATION_LIMIT)]
     train_data = [tokenize_example(row, tokenizer) for row in train_rows]
@@ -69,10 +102,11 @@ def train(data_folder: Path, output_dir: Path, base_model: str, epochs: int, lim
         output_dir=str(output_dir),
         num_train_epochs=epochs,
         learning_rate=LEARNING_RATE,
-        per_device_train_batch_size=BATCH_SIZE,
-        per_device_eval_batch_size=EVAL_BATCH_SIZE,
-        gradient_accumulation_steps=ACCUMULATION_STEPS,
-        fp16=True,
+        per_device_train_batch_size=batch_size,
+        per_device_eval_batch_size=batch_size,
+        gradient_accumulation_steps=accumulation_steps,
+        bf16=use_bf16,
+        fp16=not use_bf16,
         logging_steps=5,
         save_steps=SAVE_EVERY_STEPS,
         eval_steps=SAVE_EVERY_STEPS,
@@ -102,10 +136,11 @@ def main() -> None:
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--data-folder", default=str(OUTPUT_FOLDER))
     parser.add_argument("--base-model", default=BASE_MODEL)
+    parser.add_argument("--batch-size", type=int, default=None, help="examples per step; default depends on GPU memory")
     parser.add_argument("--epochs", type=int, default=EPOCHS)
     parser.add_argument("--limit", type=int, default=None, help="use only N examples (quick smoke test)")
     args = parser.parse_args()
-    train(Path(args.data_folder), Path(args.output_dir), args.base_model, args.epochs, args.limit)
+    train(Path(args.data_folder), Path(args.output_dir), args.base_model, args.epochs, args.limit, args.batch_size)
 
 
 if __name__ == "__main__":

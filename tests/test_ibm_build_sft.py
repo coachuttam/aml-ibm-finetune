@@ -163,3 +163,11 @@ def test_an_example_that_is_too_long_is_refused_rather_than_cut():
     example = {"alert_id": "IBM-1", "input": "abc", "answer": "xy"}
     with pytest.raises(ValueError):
         tokenize_example(example, FakeTokenizer(), max_length=5)
+
+
+def test_batch_size_grows_with_gpu_memory_and_keeps_an_effective_batch_of_16():
+    from src.ibm.finetune_ibm import EFFECTIVE_BATCH_SIZE, pick_batch_size
+
+    assert (pick_batch_size(15.0), pick_batch_size(24.0), pick_batch_size(40.0)) == (2, 4, 8)
+    for memory in (15.0, 24.0, 40.0, 80.0):
+        assert EFFECTIVE_BATCH_SIZE % pick_batch_size(memory) == 0
