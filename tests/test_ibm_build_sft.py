@@ -131,3 +131,35 @@ def laundering_rows():
         )
         rows.append({"timestamp": stamp, "from_account": "N%d" % day, "to_account": "M%d" % day})
     return rows
+
+
+class FakeTokenizer:
+    """Turns each character into a token id, so token counts are easy to predict."""
+
+    eos_token = "!"
+
+    def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+        return "".join(message["content"] for message in messages)
+
+    def __call__(self, text, add_special_tokens):
+        return {"input_ids": [ord(letter) for letter in text]}
+
+
+def test_training_loss_covers_only_the_answer_tokens():
+    from src.finetune import IGNORE_INDEX
+    from src.ibm.finetune_ibm import tokenize_example
+
+    example = {"alert_id": "IBM-1", "input": "abc", "answer": "xy"}
+    item = tokenize_example(example, FakeTokenizer(), max_length=10_000)
+    ignored = [label for label in item["labels"] if label == IGNORE_INDEX]
+    assert len(item["labels"]) - len(ignored) == len("xy!")
+
+
+def test_an_example_that_is_too_long_is_refused_rather_than_cut():
+    import pytest
+
+    from src.ibm.finetune_ibm import tokenize_example
+
+    example = {"alert_id": "IBM-1", "input": "abc", "answer": "xy"}
+    with pytest.raises(ValueError):
+        tokenize_example(example, FakeTokenizer(), max_length=5)

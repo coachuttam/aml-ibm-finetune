@@ -33,7 +33,8 @@ TYPOLOGIES = (
 )
 NO_PATTERN = NOT_LAUNDERING  # "NONE": nothing in the counted activity matches a listed pattern
 IBM_LABELS = TYPOLOGIES + (NO_PATTERN,)
-ROWS_SHOWN_PER_SIDE = 5  # keeps the input near 700 tokens, which fits a T4
+ROWS_SHOWN_PER_SIDE = 3  # Qwen reads digits one by one, so every row is costly; 3 keeps inputs near 800 tokens
+MINUTE_LENGTH = 16  # 'YYYY-MM-DD HH:MM'; the seconds are always 00 in this data and cost tokens
 MAX_NOTE_LENGTH = 400  # characters; the note is two short sentences
 CLEAN_WORDING_NOTICE = "Refer for review by an analyst."
 
@@ -62,7 +63,7 @@ SYSTEM_PROMPT = (
 def evidence_row_text(row: dict) -> str:
     """One transaction on one line, without its internal id."""
     return "%s  %s -> %s  %.2f %s  %s" % (
-        row["time"],
+        row["time"][:MINUTE_LENGTH],
         row["from"],
         row["to"],
         row["amount"],
