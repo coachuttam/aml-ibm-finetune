@@ -71,6 +71,30 @@ The same rules-versus-model question on the public IBM AML dataset (HI-Small, 5.
 
 Run with `python -m src.ibm.compare` (about 15 minutes on a laptop; needs `data/HI-Small_Trans.csv` and `data/HI-Small_Patterns.txt`). `python -m src.ibm.demo_cache` rebuilds the demo cache.
 
+## IBM fine-tune results
+
+QLoRA fine-tune of `Qwen/Qwen2.5-1.5B-Instruct` (run1) on 2,331 IBM examples (1,391 train / 284 val / 656 test, split by time and by account). The model names the typology and writes a short case note. Full tables: `results/ibm_sft_eval.md` and `results/case_typology.md`.
+
+**One payment at a time (test split, 576 laundering payments):**
+
+| System | Typology accuracy | Valid answers | Faithful notes |
+|---|---|---|---|
+| Base model | 12.3% | 66% | 74% |
+| Fine-tuned (run1) | 12.0% | 100% | 100% |
+| Graph checks | 36.1% | n/a | n/a |
+
+Fine-tuning fixed the format (valid JSON, every number in the note found in the input) but **did not improve typology accuracy**, and it is well below the graph checks. Naming a typology from one payment is not reliable.
+
+**Case level (shape of a group of payments, no LLM):**
+
+- Ceiling, whole attempts from the patterns file: 76.8% on the 95 time-split test attempts (95% range 67-84%). On the stricter account-disjoint subset it is 97.9%, but that is only 47 attempts, so treat it as an upper bound.
+- Real setting, the model's flagged payments linked into cases: 36.1% (219 cases), no better than the graph checks.
+- Accuracy by case size: 1 payment 17%, 2 to 4 payments 43%, 5 or more 68%.
+
+**Conclusion:** the bottleneck is grouping alerts into cases, not the classifier or the LLM. Most flagged cases are a single payment, and a shape cannot be read from one payment.
+
+**Next steps:** better case linking (group flagged payments more generously, or pull in the neighbouring payments); give the LLM a counted graph summary of the case as input instead of one payment.
+
 ## Quick start
 
 Works today:
